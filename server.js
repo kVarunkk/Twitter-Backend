@@ -10,20 +10,18 @@ const app = express();
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 let path = require("path");
+require("dotenv").config();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/images", express.static("images"));
-app.use("/tweetImages", express.static("tweetImages"));
+app.use("./tweetImages", express.static("tweetImages"));
 
-mongoose.connect(
-  "mongodb+srv://varunMongo:FaW7ve6XnTzWM75@cluster0.agzivff.mongodb.net/?retryWrites=true&w=majority",
-  (err) => {
-    if (err) console.log(err);
-    else console.log("mongdb is connected");
-  }
-);
+mongoose.connect(process.env.MONGO_URI, (err) => {
+  if (err) console.log(err);
+  else console.log("mongdb is connected");
+});
 
 //sign in
 app.post("/", (req, res) => {
@@ -41,7 +39,9 @@ app.post("/", (req, res) => {
           id: dbUser._id,
           username: dbUser.username,
         };
-        const token = jwt.sign(payload, "newSecretKey", { expiresIn: 86400 });
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+          expiresIn: 86400,
+        });
         return res.json({ status: "ok", user: token });
       } else {
         return res.json({ status: "error", user: false });
@@ -78,7 +78,7 @@ app.get("/feed", async (req, res) => {
   const tweetsToSkip = req.query.t || 0;
 
   try {
-    const decoded = jwt.verify(token, "newSecretKey");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const username = decoded.username;
     const user = await User.findOne({ username: username });
     Tweet.find({ isRetweeted: false })
@@ -435,7 +435,7 @@ app.get("/profile/:userName", async (req, res) => {
   const token = req.headers["x-access-token"];
 
   try {
-    const decoded = jwt.verify(token, "newSecretKey");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const username = decoded.username;
     User.findOne({ username: req.params.userName })
       .populate({
