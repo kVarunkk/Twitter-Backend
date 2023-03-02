@@ -17,10 +17,13 @@ app.use(express.json());
 app.use("/images", express.static("images"));
 app.use("/tweetImages", express.static("tweetImages"));
 
-mongoose.connect("mongodb://localhost:27017/mernDB", (err) => {
-  if (err) console.log(err);
-  else console.log("mongdb is connected");
-});
+mongoose.connect(
+  "mongodb+srv://varunMongo:FaW7ve6XnTzWM75@cluster0.agzivff.mongodb.net/?retryWrites=true&w=majority",
+  (err) => {
+    if (err) console.log(err);
+    else console.log("mongdb is connected");
+  }
+);
 
 //sign in
 app.post("/", (req, res) => {
