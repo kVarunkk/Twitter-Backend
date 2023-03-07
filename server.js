@@ -505,6 +505,19 @@ app.route("/user/:user/follow/:userName").post((req, res) => {
   });
 });
 
+// search page
+
+app.get("/search/:user", (req, res) => {
+  User.find(
+    { username: { $regex: `${req.params.user}`, $options: "i" } },
+    function (err, docs) {
+      if (!err) {
+        return res.json({ status: "ok", users: docs });
+      } else return res.json({ status: "error", error: err });
+    }
+  );
+});
+
 app.listen("5000", () => {
   console.log("server running on port 5000");
 });
