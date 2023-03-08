@@ -418,15 +418,15 @@ const upload1 = multer({
   fileFilter,
 });
 
-app.post("/avatar/:userName", upload1.single("photo"), (req, res) => {
+app.post("/avatar/:userName", (req, res) => {
   User.findOne({ username: req.params.userName }, (err, user) => {
     if (!err) {
-      user.avatar = req.file.filename;
+      user.avatar = req.body.avatar;
       if (user.avatar) {
         user.save();
-        return res.json({ status: "ok", avatar: req.file.filename });
+        return res.json({ status: "ok", avatar: req.body.avatar });
       }
-    } else return res.json({ status: "error", error: "Please upload again" });
+    } else return res.json({ status: "error", error: "Please choose again" });
   });
 });
 
