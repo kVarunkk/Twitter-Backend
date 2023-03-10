@@ -216,7 +216,7 @@ app.post("/feed", upload.single("tweetImage"), (req, res) => {
 
 //compose comment
 app.post("/feed/comment/:tweetId", (req, res) => {
-  newComment = Comment.create(
+  Comment.create(
     {
       content: req.body.content,
       postedCommentTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
@@ -243,7 +243,10 @@ app.post("/feed/comment/:tweetId", (req, res) => {
               }
             );
 
-            return res.json({ comments: doc.comments.length });
+            return res.json({
+              comments: doc.comments.length,
+              docs: doc.comments,
+            });
           } else
             return res.json({ status: "error", error: "An error occured" });
         });
