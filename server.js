@@ -245,7 +245,6 @@ app.post("/feed/comment/:tweetId", (req, res) => {
 
             return res.json({
               comments: doc.comments.length,
-              docs: doc.comments,
             });
           } else
             return res.json({ status: "error", error: "An error occured" });
