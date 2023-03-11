@@ -154,7 +154,6 @@ app.get("/feed/comments/:tweetId", (req, res) => {
 });
 
 //compose tweet
-
 app.post("/feed", (req, res) => {
   const info = req.body;
   const tweetInfo = req.body.tweet;
