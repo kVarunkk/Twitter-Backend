@@ -477,7 +477,6 @@ app.route("/user/:user/follow/:userName").post((req, res) => {
 });
 
 // search page
-
 app.get("/search/:user", (req, res) => {
   User.find(
     { username: { $regex: `${req.params.user}`, $options: "i" } },
