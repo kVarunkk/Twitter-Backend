@@ -157,7 +157,7 @@ app.get("/feed/comments/:tweetId", (req, res) => {
 
 app.post("/feed", (req, res) => {
   const info = req.body;
-  const tweetInfo = JSON.parse(req.body.tweet);
+  const tweetInfo = req.body.tweet;
 
   // console.log(req.file);
   newTweet = Tweet.create(
