@@ -159,7 +159,6 @@ app.post("/feed", (req, res) => {
   const info = req.body;
   const tweetInfo = req.body.tweet;
 
-  // console.log(req.file);
   newTweet = Tweet.create(
     {
       content: tweetInfo.content,
