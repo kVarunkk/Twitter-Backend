@@ -389,11 +389,6 @@ const storageEngine = multer.diskStorage({
   },
 });
 
-const upload1 = multer({
-  storage: storageEngine,
-  fileFilter,
-});
-
 app.post("/avatar/:userName", (req, res) => {
   User.findOne({ username: req.params.userName }, (err, user) => {
     if (!err) {
