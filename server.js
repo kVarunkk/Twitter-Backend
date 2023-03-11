@@ -155,55 +155,30 @@ app.get("/feed/comments/:tweetId", (req, res) => {
 
 //compose tweet
 
-const storageEngine1 = multer.diskStorage({
-  destination: "tweetImages",
-  filename: function (req, file, callback) {
-    callback(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-
-const fileFilter = (req, file, callback) => {
-  let pattern = /jpg|png|jpeg/; // reqex
-
-  if (pattern.test(path.extname(file.originalname))) {
-    callback(null, true);
-  } else {
-    callback("Error: not a valid file");
-  }
-};
-
-const upload = multer({
-  storage: storageEngine1,
-  fileFilter,
-});
-
-app.post("/feed", upload.single("tweetImage"), (req, res) => {
-  const info = JSON.parse(JSON.stringify(req.body));
-  const finalInfo = JSON.parse(info.main);
+app.post("/feed", (req, res) => {
+  const info = req.body;
+  const tweetInfo = JSON.parse(req.body.tweet);
 
   // console.log(req.file);
   newTweet = Tweet.create(
     {
-      content: finalInfo.content,
+      content: tweetInfo.content,
       retweets: [],
       postedTweetTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
     },
     (err, newTweet) => {
       if (!err) {
-        if (req.file) {
-          newTweet.image = req.file.filename;
+        if (info.image) {
+          newTweet.image = info.image;
         } else console.log("no image found");
-        User.findOne({ username: finalInfo.postedBy.username }, (err, doc) => {
+        User.findOne({ username: tweetInfo.postedBy.username }, (err, doc) => {
           if (!err) {
             newTweet.postedBy = doc._id;
             if (newTweet.postedBy) {
               newTweet.save();
               doc.tweets.unshift(newTweet._id);
               doc.save();
-              return res.json({ image: req.file });
+              return res.json({ image: info.image });
             } else
               return res.json({ status: "error", error: "An error occured" });
           } else
