@@ -493,13 +493,66 @@ app.get("/search/:user", (req, res) => {
   );
 });
 
-//topics page
-app.get("/topic/:tag", (req, res) => {
-  Tweet.find({ tag: req.params.tag }, function (err, docs) {
-    if (!err) {
-      return res.json({ status: "ok", tweets: docs });
-    } else return res.json({ status: "error", error: err });
-  });
+app.get("/topic/:tag", async (req, res) => {
+  const token = req.headers["x-access-token"];
+
+  const tweetsToSkip = req.query.t || 0;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const username = decoded.username;
+    const user = await User.findOne({ username: username });
+    Tweet.find({ isRetweeted: false, tag: req.params.tag })
+      .populate("postedBy")
+      .populate("comments")
+      .sort({ createdAt: -1 })
+      .skip(tweetsToSkip)
+      .limit(20)
+      .exec((err, docs) => {
+        if (!err) {
+          //to know if a person has liked tweet
+          docs.forEach((doc) => {
+            if (!doc.likes.includes(username)) {
+              doc.likeTweetBtn = "black";
+              doc.save();
+            } else {
+              doc.likeTweetBtn = "deeppink";
+              doc.save();
+            }
+          });
+
+          //to know if a person has liked comment
+          docs.forEach((doc) => {
+            doc.comments.forEach((docComment) => {
+              if (!docComment.likes.includes(username)) {
+                docComment.likeCommentBtn = "black";
+                docComment.save();
+              } else {
+                docComment.likeCommentBtn = "deeppink";
+                docComment.save();
+              }
+            });
+          });
+
+          //to know if a person has retweeted the tweet
+          docs.forEach((doc) => {
+            if (!doc.retweets.includes(username)) {
+              doc.retweetBtn = "black";
+            } else {
+              doc.retweetBtn = "green";
+            }
+          });
+
+          return res.json({
+            status: "ok",
+            tweets: docs,
+            activeUser: user,
+          });
+        }
+      });
+  } catch (error) {
+    return res.json({ status: "error", error: "Session ended :(" });
+  }
 });
 
 app.listen("5000", () => {
