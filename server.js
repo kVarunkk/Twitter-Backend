@@ -403,11 +403,11 @@ app.post("/avatar/:userName", (req, res) => {
 //user profile
 app.get("/profile/:userName", async (req, res) => {
   const token = req.headers["x-access-token"];
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.header(
-  //   "Access-Control-Allow-Headers",
-  //   "Origin, X-Requested-With, Content-Type, Accept"
-  // );
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
