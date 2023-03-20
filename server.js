@@ -492,6 +492,15 @@ app.get("/search/:user", (req, res) => {
   );
 });
 
+//topics page
+app.get("/topic/:tag", (req, res) => {
+  Tweet.find({ tag: req.params.tag }, function (err, docs) {
+    if (!err) {
+      return res.json({ status: "ok", tweets: docs });
+    } else return res.json({ status: "error", error: err });
+  });
+});
+
 app.listen("5000", () => {
   console.log("server running on port 5000");
 });

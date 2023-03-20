@@ -28,6 +28,9 @@ const tweetSchema = new mongoose.Schema(
     content: {
       type: String,
     },
+    tag: {
+      type: String,
+    },
     image: {
       type: String,
     },
