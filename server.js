@@ -23,6 +23,15 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
   else console.log("mongdb is connected");
 });
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 //sign in
 app.post("/", (req, res) => {
   const userLogin = req.body;
@@ -379,17 +388,6 @@ app.route("/editComment/:commentId").post((req, res) => {
   });
 });
 
-//upload image
-const storageEngine = multer.diskStorage({
-  destination: "images",
-  filename: function (req, file, callback) {
-    callback(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-
 app.post("/avatar/:userName", (req, res) => {
   User.findOne({ username: req.params.userName }, (err, user) => {
     if (!err) {
@@ -405,6 +403,11 @@ app.post("/avatar/:userName", (req, res) => {
 //user profile
 app.get("/profile/:userName", async (req, res) => {
   const token = req.headers["x-access-token"];
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
