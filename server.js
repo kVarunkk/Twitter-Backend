@@ -173,6 +173,7 @@ app.post("/feed", (req, res) => {
     {
       content: tweetInfo.content,
       retweets: [],
+      tag: tweetInfo.tag,
       postedTweetTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
     },
     (err, newTweet) => {
