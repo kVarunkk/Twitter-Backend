@@ -12,7 +12,12 @@ const { v4: uuidv4 } = require("uuid");
 let path = require("path");
 require("dotenv").config();
 
-app.use(cors());
+const corsOptions = {
+  origin: "*",
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/images", express.static("images"));
@@ -84,11 +89,11 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   const tweetsToSkip = req.query.t || 0;
 
@@ -151,11 +156,11 @@ app.get("/feed", async (req, res) => {
 
 //populate comments of a particular tweet
 app.get("/feed/comments/:tweetId", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   Tweet.find({ postedTweetTime: req.params.tweetId })
     .populate("postedBy")
@@ -416,11 +421,11 @@ app.post("/avatar/:userName", (req, res) => {
 //user profile
 app.get("/profile/:userName", async (req, res) => {
   const token = req.headers["x-access-token"];
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -495,11 +500,11 @@ app.route("/user/:user/follow/:userName").post((req, res) => {
 
 // search page
 app.get("/search/:user", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   User.find(
     { username: { $regex: `${req.params.user}`, $options: "i" } },
@@ -514,11 +519,11 @@ app.get("/search/:user", (req, res) => {
 app.get("/topic/:tag", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   const tweetsToSkip = req.query.t || 0;
 
