@@ -23,14 +23,14 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
   else console.log("mongdb is connected");
 });
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 //sign in
 app.post("/", (req, res) => {
@@ -83,6 +83,12 @@ app.post("/signup", async (req, res) => {
 //feed
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   const tweetsToSkip = req.query.t || 0;
 
@@ -145,6 +151,12 @@ app.get("/feed", async (req, res) => {
 
 //populate comments of a particular tweet
 app.get("/feed/comments/:tweetId", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+
   Tweet.find({ postedTweetTime: req.params.tweetId })
     .populate("postedBy")
 
@@ -483,6 +495,12 @@ app.route("/user/:user/follow/:userName").post((req, res) => {
 
 // search page
 app.get("/search/:user", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+
   User.find(
     { username: { $regex: `${req.params.user}`, $options: "i" } },
     function (err, docs) {
@@ -495,6 +513,12 @@ app.get("/search/:user", (req, res) => {
 
 app.get("/topic/:tag", async (req, res) => {
   const token = req.headers["x-access-token"];
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   const tweetsToSkip = req.query.t || 0;
 
