@@ -89,11 +89,11 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.header(
-  //   "Access-Control-Allow-Headers",
-  //   "Origin, X-Requested-With, Content-Type, Accept"
-  // );
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   const tweetsToSkip = req.query.t || 0;
 
