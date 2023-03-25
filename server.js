@@ -30,10 +30,10 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
 
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
-  // res.header(
-  //   "Access-Control-Allow-Headers",
-  //   "Origin, X-Requested-With, Content-Type, Accept"
-  // );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
@@ -89,7 +89,10 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  res.set("Access-Control-Allow-Origin", "*");
+  res.set(
+    "Access-Control-Allow-Origin",
+    "https://varuns-twitter-clone.vercel.app/feed"
+  );
   // res.header(
   //   "Access-Control-Allow-Headers",
   //   "Origin, X-Requested-With, Content-Type, Accept"
