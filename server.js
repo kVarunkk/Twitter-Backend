@@ -89,10 +89,7 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  res.set(
-    "Access-Control-Allow-Origin",
-    "https://varuns-twitter-clone.vercel.app/"
-  );
+  res.set("Access-Control-Allow-Origin", "*");
   // res.header(
   //   "Access-Control-Allow-Headers",
   //   "Origin, X-Requested-With, Content-Type, Accept"
