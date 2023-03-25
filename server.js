@@ -28,14 +28,14 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
   else console.log("mongdb is connected");
 });
 
-app.use((req, res, next) => {
-  res.set("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.set("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 //sign in
 app.post("/", (req, res) => {
@@ -91,7 +91,7 @@ app.get("/feed", async (req, res) => {
 
   res.set(
     "Access-Control-Allow-Origin",
-    "https://varuns-twitter-clone.vercel.app/feed"
+    "https://varuns-twitter-clone.vercel.app/"
   );
   // res.header(
   //   "Access-Control-Allow-Headers",
