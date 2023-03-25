@@ -28,14 +28,14 @@ mongoose.connect(process.env.MONGO_URI, (err) => {
   else console.log("mongdb is connected");
 });
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.use((req, res, next) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
+  next();
+});
 
 //sign in
 app.post("/", (req, res) => {
@@ -89,11 +89,11 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   const token = req.headers["x-access-token"];
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.set("Access-Control-Allow-Origin", "*");
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept"
+  // );
 
   const tweetsToSkip = req.query.t || 0;
 
