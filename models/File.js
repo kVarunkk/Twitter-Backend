@@ -30,7 +30,6 @@ const tweetSchema = new mongoose.Schema(
     },
     tag: {
       type: String,
-      required: true,
     },
     image: {
       type: String,
