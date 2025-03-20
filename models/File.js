@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bio: {
+    type: String,
+  },
+  banner: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,
@@ -69,6 +75,7 @@ const tweetSchema = new mongoose.Schema(
       default: false,
     },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    retweetedFrom: { type: mongoose.Schema.Types.ObjectId, ref: "Tweet" }, // Reference to the original tweet
   },
   {
     timestamps: true,
